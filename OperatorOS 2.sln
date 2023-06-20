@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.33711.374
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Operator 2", "Operator 2\Operator 2.csproj", "{5D160184-F18C-47E8-9443-4D6C3D5E2C61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperatorOS 2", "Operator 2\OperatorOS 2.csproj", "{5D160184-F18C-47E8-9443-4D6C3D5E2C61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Item", "Solution Item", "{BC3D7B92-5FD3-4302-A320-EE87F8587788}"
+	ProjectSection(SolutionItems) = preProject
+		Operator 2\.editorconfig = Operator 2\.editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

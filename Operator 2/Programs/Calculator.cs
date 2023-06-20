@@ -12,12 +12,12 @@ namespace Operator_2.Programs
 
     internal abstract class Calculator
     {
-        protected double Number;
+        protected double[] Numbers;
         protected Operation Op;
 
-        protected Calculator(double number, Operation op)
+        protected Calculator(double[] numbers, Operation op)
         {
-            Number = number;
+            Numbers = numbers;
             Op = op;
         }
 
@@ -26,21 +26,20 @@ namespace Operator_2.Programs
 
     internal class GCalculator : Calculator
     {
-        public GCalculator(double number, Operation op) : base(number, op)
+        public GCalculator(double[] numbers, Operation op) : base(numbers, op)
         {
-            Console.WriteLine();
         }
 
         public override void Calculate()
         {
-            
+            // Implement the calculation logic specific to GCalculator
             Console.WriteLine("This is GCalculator. Performing operation: " + Op.ToString());
         }
     }
 
     internal class CCalculator : Calculator
     {
-        public CCalculator(double number, Operation op) : base(number, op)
+        public CCalculator(double[] numbers, Operation op) : base(numbers, op)
         {
         }
 
@@ -50,6 +49,4 @@ namespace Operator_2.Programs
             Console.WriteLine("This is CCalculator. Performing operation: " + Op.ToString());
         }
     }
-
-    
 }

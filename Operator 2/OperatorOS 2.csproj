@@ -8,4 +8,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\rayan\source\repos\Operator 2\Operator 2\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\rayan\source\repos\Operator 2\Operator 2\.editorconfig" />
+  </ItemGroup>
+
 </Project>
