@@ -38,7 +38,7 @@ public class PreDesktop
 
         do
         {
-            Console.WriteLine($"{text}\nWould you like to continue with this information?\nWARNING: use Y or N or else you will get an error on this version\nEnter the option below\nOption: ");
+            Console.WriteLine($"{text}\nWould you like to continue with this information?\nEnter the option below\nOption: ");
             value = Console.ReadLine().ToLower();
 
             if (value == "y") return true;
