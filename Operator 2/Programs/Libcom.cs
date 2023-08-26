@@ -27,6 +27,7 @@
 
         public static void RunCommand(string command)
         {
+
             switch (command)
             {
                 case "testerror":

@@ -101,13 +101,56 @@ public class PreDesktop
     public void UserSignIn()
     {
         // TODO: Implement User Sign-in logic
+        Console.WriteLine("501: NOT IMPLEMENTED");
+        Logon();
 
     }
     public void Logon()
     {
-        Console.WriteLine("------------ Signing Operation ------------");
-        if (systemHasUser == true) { Console.WriteLine("Sign Up - Creates a new User Profile"); Console.WriteLine("Sign in - Logs in into already existing users"); } else { Console.WriteLine("Sign Up - Creates a new Admin Profile"); Console.WriteLine("Sign in - Unavailable"); }
-        
+        string option;
+        bool x = false;
+        do
+        {
+            
+            Console.WriteLine("------------ Signing Operation ------------");
+            if (systemHasUser == true) { Console.WriteLine("Sign Up - Creates a new User Profile"); Console.WriteLine("Sign in - Logs in into already existing users"); } else { Console.WriteLine("Sign Up - Creates a new Admin Profile"); Console.WriteLine("Sign in - Unavailable"); }
+            option = Console.ReadLine();
+            if (string.IsNullOrEmpty(option) == false)
+            {
+                option.ToLower();
+                if (option == "sign up" || option == "sign in" && systemHasUser == true)
+                {
+                    x = true; Console.WriteLine($"{option} command");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid string");
+
+            }
+            if (x == false)
+            {
+                Console.WriteLine("Failed to choose. Please try again");
+
+            }
+            Thread.Sleep(500);
+            Console.Clear();
+        } while (x == false);
+        if (option == "sign up")
+        {
+            UserSignUp();
+        }
+        else if (option == "sign in")
+        {
+            UserSignIn();
+        }
+        else
+        {
+            Console.WriteLine("SYSTEM WIDE ERROR: PLEASE CONTACT THE REPOS");
+            Console.WriteLine("Press enter to continue......");
+            Console.ReadLine();
+            Environment.Exit(1);
+        }
     }
 
     public static void Main(string[] args)
