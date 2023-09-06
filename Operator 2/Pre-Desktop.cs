@@ -62,7 +62,7 @@
         }
         else
         {
-            Console.WriteLine("ERROR: SILLEGAL CONFIG");
+            Console.WriteLine("ERROR: ILLEGAL CONFIG");
                 Environment.Exit(2);
         }
         Thread.Sleep(1000);

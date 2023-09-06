@@ -53,6 +53,9 @@
                 case "credits":
                     Credits();
                     break;
+                case "clear":
+                    Clear();
+                    break;
                 // Continue with the rest of your commands...
                 default:
                     Console.WriteLine($"Command \"{command}\" not recognized.");
@@ -78,12 +81,12 @@
 
         private static void Run()
         {
-            
+            Console.WriteLine($"This command is under development.\nThis is what you should expect from this command:\n1. Be able to run advanced programs\n2. Run custom code using compiled code!\n3. Be able to run code without browsing using single line arguments!\nRegarding that. This is what you should expect\n{runnableCommand}");
         }
 
         private static void Help()
         {
-            Console.WriteLine("QnA\nQ: How do we add applications\nA: You could but you need to have access to the source files which we have open source so add any function that seems fit\nQ: Why do some applications say they are under development\nA: Because these applicatons are planned in the future\nThat's it (if you want to know where to ask these question send them in the Github as a issue)");
+            Console.WriteLine("QnA\nQ: How do we add applications\nA: Its currently not possible in this version however later on you have the ability to run any .exe file you wish or DLL!\nQ: Why do some applications say they are under development\nA: Because these applicatons are planned in the future\nThat's it (if you want to know where to ask these question send them in the Github as a issue)");
         }
 
         private static void CommandHelp()
@@ -95,7 +98,11 @@
         {
             Console.WriteLine(credit);
         }
-
-        // Continue adding the rest of your functions...
+        
+        private static void Clear()
+        {
+            Console.Clear();
+        }
+        
     }
 }

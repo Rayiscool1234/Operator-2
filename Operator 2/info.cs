@@ -1,6 +1,6 @@
 ﻿public class SystemnI
 {
-    public const bool DEBUG = false;
+    public const bool DEBUG = true;
     public const string VERSION = "v0.0.6 Alpha";
     
     public string SystemInfo(string? requestedQuery = null)
