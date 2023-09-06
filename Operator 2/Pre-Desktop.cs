@@ -203,7 +203,7 @@ public class Desktop
             {
                 ExitNotice = true;
             }
-            if (string.IsNullOrEmpty(command) == false)
+            if (string.IsNullOrEmpty(command) == false && command != "exit")
             {
                 CommandLibrary.CommandLibrary.RunCommand(command);
             }
