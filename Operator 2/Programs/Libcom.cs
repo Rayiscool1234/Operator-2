@@ -10,7 +10,6 @@
         private static string passwordA = "NaP";
         private static string userA;
         private static string runnableCommand = "Non HR perms:\ncalculator-permissions\nHR perms:\ngivepermissions-logininfo-update";
-        private static string versionA = "V0.0.7 RC";
         private static string credit = "OperatorOS\nDesigned by Rayan\nCreated by Rayan\nConcept by Rayan\nThank you for using this Applications";
 
         private static string com = "chelp-help-run-hp-credits-about-test";
@@ -68,7 +67,8 @@
 
         private static void About()
         {
-            Console.WriteLine(versionA);
+            SystemnI systemnI = new SystemnI();
+            Console.WriteLine(systemnI.SystemInfo("VERSION"));
         }
 
         private static void HighPermission()
@@ -78,7 +78,7 @@
 
         private static void Run()
         {
-            // Implementation...
+            
         }
 
         private static void Help()

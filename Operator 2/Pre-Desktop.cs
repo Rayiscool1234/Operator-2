@@ -1,34 +1,32 @@
-﻿using System;
-using System.IO;
-using CommandLibrary;
-
-// Pre-Desktop
-public class PreDesktop
+﻿public class PreDesktop
 {
-    public bool Debug = true;
+    public bool DEBUG;
+    public string VERSION;
     public bool Skip = false;
     public bool ExitNotice = false;
     public bool ExitRequest = false;
-    public string Version = "v0.0.4 Alpha";
     public string User;
     public string Password;
     public bool systemHasUser = false;
 
     public void Welcome()
     {
-        Console.WriteLine($"Welcome to OperatorOS 2! {Version}");
-        Console.WriteLine("SYSTEM STATEMENT: The user you will create will have Admin permissions");
-        Console.WriteLine("Skip?");
-
-        string output = Console.ReadLine();
-
-        if (output == "y" && Debug)
+        Console.WriteLine($"Welcome to OperatorOS 2! {VERSION}");
+        if (!systemHasUser)
         {
-            Skip = true;
-            User = "Tester";
-            Password = "a";
+            Console.WriteLine("SYSTEM STATEMENT: The user you will create will have Admin permissions");
         }
 
+        if (DEBUG) {
+            Console.WriteLine("Skip?");
+            string output = Console.ReadLine();
+            if (output == "y")
+            {
+                Skip = true;
+                User = "Tester";
+                Password = "a";
+            }
+        }
         
     }
 
@@ -51,8 +49,23 @@ public class PreDesktop
 
     public void Bootup()
     {
+        SystemnI systemni = new SystemnI();
         Console.WriteLine("OperatorOS 2.0. The new generation of Operations!\n\nYour Operating System is currently preparing. Please standby");
-        Thread.Sleep(15000);
+        VERSION = systemni.SystemInfo("VERSION");
+        if (systemni.SystemInfo("DEBUG") == "True")
+        {
+            DEBUG = true;
+        }
+        else if (systemni.SystemInfo("DEBUG") == "False")
+        {
+            DEBUG = false;
+        }
+        else
+        {
+            Console.WriteLine("ERROR: SILLEGAL CONFIG");
+                Environment.Exit(2);
+        }
+        Thread.Sleep(1000);
         Console.WriteLine("Logon menu activated!");
     }
 
@@ -158,10 +171,13 @@ public class PreDesktop
         
 
         PreDesktop preDesktop = new PreDesktop();
-
         preDesktop.Bootup();
         preDesktop.Welcome();
         preDesktop.Logon();
+        
+        Desktop desktop = new Desktop();
+        desktop.Sync(preDesktop.User);
+        desktop.WelcomeToDesktop();
     }
 }
 
@@ -170,9 +186,11 @@ public class Desktop
 {
     public bool ExitNotice = false;
     public bool ExitRequest = false;
-    public string User;
+    public string? User;
 
-    public void Commandline()
+    public void Sync(string user = "ELOF") { User = user; }
+
+    private void Commandline()
     {
         string command;
 
@@ -185,7 +203,10 @@ public class Desktop
             {
                 ExitNotice = true;
             }
-            CommandLibrary.CommandLibrary.RunCommand(command);
+            if (string.IsNullOrEmpty(command) == false)
+            {
+                CommandLibrary.CommandLibrary.RunCommand(command);
+            }
             command = "";
 
         } while (!ExitNotice);
@@ -196,7 +217,8 @@ public class Desktop
     public void WelcomeToDesktop()
     {
         Console.WriteLine($"Welcome, {User}. This Operating System is one of the BEST around for your Operating needs!.");
-        Console.WriteLine("Need to check for help");
+        Console.WriteLine("Need to check for help or need commands?");
+        Console.WriteLine("Just do chelp and help!");
 
         do
         {

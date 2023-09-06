@@ -8,5 +8,14 @@ namespace Operator_2.ErrorHandling
 {
     internal class ErrorHandler
     {
+        public int ErrorHandle() {
+
+
+
+            
+
+
+            return 0;
+        }
     }
 }
