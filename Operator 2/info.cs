@@ -3,9 +3,9 @@
     public const bool DEBUG = true;
     public const string VERSION = "v0.0.6 Alpha";
     
-    public string SystemInfo(string? requestedQuery = null)
+    public string SystemInfo(string? requestedQuery = null, bool illegalexit = true)
 	{
-        if (requestedQuery == null) { Console.WriteLine("ERROR: INVALID QUERY SYSTEM FAILURE IMMEDIATE"); Environment.Exit(1); return ""; }
+        if (requestedQuery == null && illegalexit) { Console.WriteLine("ERROR: INVALID QUERY SYSTEM FAILURE IMMEDIATE"); Environment.Exit(1); return ""; }
         switch (requestedQuery)
         {
             case "DEBUG":
@@ -14,7 +14,7 @@
                 return VERSION;
             default:
 
-                return "";
+                return "QUERY DOES NOT EXIST";
 
 
 

@@ -1,18 +1,20 @@
-﻿namespace CommandLibrary
+﻿using System.ComponentModel.Design;
+
+namespace CommandLibrary
 {
-    public static class CommandLibrary
+    public class CommandLibrary
     {
         private static bool scheduledShutdown = false;
         private static int counter = 0;
-        private static bool highPermission = false;
+        private bool highPermission = false;
         private static bool ranCommand = false;
 
-        private static string passwordA = "NaP";
-        private static string userA;
+        private string passwordA = "NaP";
+        private string userA;
         private static string runnableCommand = "Non HR perms:\ncalculator-permissions\nHR perms:\ngivepermissions-logininfo-update";
         private static string credit = "OperatorOS\nDesigned by Rayan\nCreated by Rayan\nConcept by Rayan\nThank you for using this Applications";
 
-        private static string com = "chelp-help-run-hp-credits-about-test";
+        private static string com = "chelp-help-run-hp-credits-about-test-query";
 
         private static bool Find(string input, string searchTerm)
         {
@@ -24,7 +26,7 @@
             return lowercaseInput.Contains(lowercaseSearchTerm);
         }
 
-        public static void RunCommand(string command)
+        public void RunCommand(string command)
         {
 
             switch (command)
@@ -39,7 +41,7 @@
                     About();
                     break;
                 case "hp":
-                    HighPermission();
+                    Highpermission();
                     break;
                 case "run":
                     Run();
@@ -56,13 +58,34 @@
                 case "clear":
                     Clear();
                     break;
+                case "query":
+                    SystemnI systemnI = new SystemnI();
+                    string x = Console.ReadLine();
+                    Console.WriteLine(systemnI.SystemInfo(x, false));
+                    break;
                 // Continue with the rest of your commands...
                 default:
                     Console.WriteLine($"Command \"{command}\" not recognized.");
                     break;
             }
         }
-
+        public void sync(string? User, string? password) { userA = User; passwordA = password; }
+        private void Highpermission()
+        {
+            Console.WriteLine($"Hello, {userA}. We must request your password before giving you High Perms");
+            Console.WriteLine("Enter your password: ");
+            string Passwd = Console.ReadLine();
+            if (counter >= 3)
+            {
+                if (Passwd == passwordA)
+                {
+                    Console.WriteLine("Your password is accepted! You will have permissions in future running commands");
+                    highPermission = true; Console.WriteLine("Permission escalation done...");
+                }
+                else { Console.WriteLine("System Permission failure! Try again"); }
+            } 
+            else { Console.WriteLine("Too many attempts"); }
+        }
         private static void Test()
         {
             Console.WriteLine("Hello, world");
@@ -72,11 +95,6 @@
         {
             SystemnI systemnI = new SystemnI();
             Console.WriteLine(systemnI.SystemInfo("VERSION"));
-        }
-
-        private static void HighPermission()
-        {
-            // Implementation...
         }
 
         private static void Run()

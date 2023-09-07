@@ -1,4 +1,6 @@
-﻿public class PreDesktop
+﻿using CommandLibrary;
+
+public class PreDesktop
 {
     public bool DEBUG;
     public string VERSION;
@@ -73,9 +75,8 @@
     {
         Console.WriteLine("Saving Credentials\nSaved Credentials");
 
-        // Assuming you have somewhere to save the passwords.
-        // PasswordA = Password;
-        // UserA = User;
+        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
+        lib.sync(User, Password);
 
         using (StreamWriter UserCredentials = new StreamWriter("UserCredentials.txt"))
         {
@@ -88,8 +89,8 @@
 
     public int UserSignUp()
     {
-        if (Skip) return 0;
-
+        if (Skip) { UserSave(); return 0; } 
+         
         bool yesOrNo;
 
         do
@@ -106,7 +107,7 @@
 
         } while (!yesOrNo);
 
-        UserSave();
+        
 
         return 0;
     }
@@ -168,7 +169,7 @@
 
     public static void Main(string[] args)
     {
-        
+        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
 
         PreDesktop preDesktop = new PreDesktop();
         preDesktop.Bootup();
@@ -193,7 +194,7 @@ public class Desktop
     private void Commandline()
     {
         string command;
-
+        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
         do
         {
             Console.Write($"{User}>> ");
@@ -205,7 +206,7 @@ public class Desktop
             }
             if (string.IsNullOrEmpty(command) == false && command != "exit")
             {
-                CommandLibrary.CommandLibrary.RunCommand(command);
+                lib.RunCommand(command);
             }
             command = "";
 
