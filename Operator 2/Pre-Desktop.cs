@@ -169,7 +169,6 @@ public class PreDesktop
 
     public static void Main(string[] args)
     {
-        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
 
         PreDesktop preDesktop = new PreDesktop();
         preDesktop.Bootup();
@@ -188,13 +187,14 @@ public class Desktop
     public bool ExitNotice = false;
     public bool ExitRequest = false;
     public string? User;
+    public string? Password;
 
-    public void Sync(string user = "ELOF") { User = user; }
+    public void Sync(string user = "ELOF", string password = "ELOP") { User = user; Password = password; }
 
     private void Commandline()
     {
-        string command;
         CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
+        string command;
         do
         {
             Console.Write($"{User}>> ");
@@ -220,7 +220,8 @@ public class Desktop
         Console.WriteLine($"Welcome, {User}. This Operating System is one of the BEST around for your Operating needs!.");
         Console.WriteLine("Need to check for help or need commands?");
         Console.WriteLine("Just do chelp and help!");
-
+        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
+        lib.sync(User, Password);
         do
         {
             Commandline();

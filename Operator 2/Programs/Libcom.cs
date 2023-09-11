@@ -60,6 +60,7 @@ namespace CommandLibrary
                     break;
                 case "query":
                     SystemnI systemnI = new SystemnI();
+                    Console.WriteLine("Enter Query detail:");
                     string x = Console.ReadLine();
                     Console.WriteLine(systemnI.SystemInfo(x, false));
                     break;
@@ -72,11 +73,12 @@ namespace CommandLibrary
         public void sync(string? User, string? password) { userA = User; passwordA = password; }
         private void Highpermission()
         {
-            Console.WriteLine($"Hello, {userA}. We must request your password before giving you High Perms");
-            Console.WriteLine("Enter your password: ");
-            string Passwd = Console.ReadLine();
+            
             if (counter >= 3)
             {
+                Console.WriteLine($"Hello, {userA}. We must request your password before giving you High Perms");
+                Console.WriteLine("Enter your password: ");
+                string Passwd = Console.ReadLine();
                 if (Passwd == passwordA)
                 {
                     Console.WriteLine("Your password is accepted! You will have permissions in future running commands");
@@ -84,7 +86,7 @@ namespace CommandLibrary
                 }
                 else { Console.WriteLine("System Permission failure! Try again"); }
             } 
-            else { Console.WriteLine("Too many attempts"); }
+            else { Console.WriteLine("Too many attempts try again later"); }
         }
         private static void Test()
         {

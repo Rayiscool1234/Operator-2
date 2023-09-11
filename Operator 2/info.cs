@@ -1,26 +1,50 @@
-﻿public class SystemnI
+﻿using System;
+using System.Collections.Generic;
+
+public class SystemnI
 {
-    public const bool DEBUG = true;
-    public const string VERSION = "v0.0.6 Alpha";
-    
-    public string SystemInfo(string? requestedQuery = null, bool illegalexit = true)
+	public const bool DEBUG = true;
+	public const string VERSION = "v0.0.6 Alpha";
+
+	// Create a dictionary to store the system information
+	private Dictionary<string, string> systemInfoDict = new Dictionary<string, string>
 	{
-        if (requestedQuery == null && illegalexit) { Console.WriteLine("ERROR: INVALID QUERY SYSTEM FAILURE IMMEDIATE"); Environment.Exit(1); return ""; }
-        switch (requestedQuery)
-        {
-            case "DEBUG":
-                return DEBUG.ToString();
-            case "VERSION":
-                return VERSION;
-            default:
+		{ "DEBUG", DEBUG.ToString() },
+		{ "VERSION", VERSION }
+	};
 
-                return "QUERY DOES NOT EXIST";
+	public string SystemInfo(string? requestedQuery = null, bool illegalexit = true)
+	{
+		if (requestedQuery == null && illegalexit)
+		{
+			Console.WriteLine("ERROR: INVALID QUERY SYSTEM FAILURE IMMEDIATE");
+			Environment.Exit(1);
+			return "";
+		}
 
+		if (string.IsNullOrEmpty(requestedQuery))
+		{
+			requestedQuery = "NULL";
+		}
+		else
+		{
+			requestedQuery = requestedQuery.ToUpper();
+		}
 
+		if (requestedQuery.Contains(" ") || requestedQuery.Contains("   ") || requestedQuery.Contains("\\"))
+		{
+			return "PROHIBITED UNICODE CHARACTER: DON'T USE SPACE TAB OR BACKSLASH\nUSE INSTEAD UNDERSCORE \"_\"";
+		}
 
-
-
-
-        }
+		// Search for the query in the dictionary
+		if (systemInfoDict.TryGetValue(requestedQuery, out string result))
+		{
+			return result;
+		}
+		else
+		{
+			return $"QUERY KEY: \"{requestedQuery}\" DOES NOT EXIST ";
+		}
 	}
 }
+
