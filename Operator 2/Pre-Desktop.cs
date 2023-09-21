@@ -1,4 +1,7 @@
 ﻿using CommandLibrary;
+using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 
 public class PreDesktop
 {
@@ -10,7 +13,8 @@ public class PreDesktop
     public string User;
     public string Password;
     public bool systemHasUser = false;
-
+    public bool systemGotUser = false;
+    public bool signin = false;
     public void Welcome()
     {
         Console.WriteLine($"Welcome to OperatorOS 2! {VERSION}");
@@ -38,7 +42,7 @@ public class PreDesktop
 
         do
         {
-            Console.WriteLine($"{text}\nWould you like to continue with this information?\nEnter the option below\nOption: ");
+            Console.WriteLine($"{text}\nWould you like to continue with this information?\nEnter the option below\nHint: Use y or n to choose!\nOption: ");
             value = Console.ReadLine().ToLower();
 
             if (value == "y") return true;
@@ -48,7 +52,44 @@ public class PreDesktop
 
         return false;
     }
+    public string Censoredinput(string text)
+    {
+        string censorText = "";
+        Console.Write(text);
+        int cursorLeft = Console.CursorLeft;
+        int cursorTop = Console.CursorTop;
+        while (true)
+        {
+            ConsoleKeyInfo key = Console.ReadKey(true);
 
+            // Handle Enter key
+            if (key.Key == ConsoleKey.Enter)
+            {
+                break;
+            }
+
+            // Handle Backspace key
+            if (key.Key == ConsoleKey.Backspace)
+            {
+                if (censorText.Length > 0)
+                {
+                    censorText = censorText.Remove(Password.Length - 1);
+                    Console.Write("\b \b");  // Move cursor back, overwrite with space, move cursor back again
+                    cursorLeft--;
+                }
+                continue;
+            }
+
+            censorText += key.KeyChar;
+            Console.Write("*");
+            cursorLeft++;
+
+            
+        }
+        Console.SetCursorPosition(cursorLeft, cursorTop);
+        Console.Write("\n");
+        return censorText;
+    }
     public void Bootup()
     {
         SystemnI systemni = new SystemnI();
@@ -68,6 +109,15 @@ public class PreDesktop
                 Environment.Exit(2);
         }
         Thread.Sleep(1000);
+        if (File.Exists("UserCredentials.txt"))
+        {
+            systemGotUser = true;
+        }
+        if (systemGotUser == true)
+        {
+            systemHasUser = true;
+
+        }
         Console.WriteLine("Logon menu activated!");
     }
 
@@ -78,6 +128,7 @@ public class PreDesktop
         CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
         lib.sync(User, Password);
 
+
         using (StreamWriter UserCredentials = new StreamWriter("UserCredentials.txt"))
         {
             UserCredentials.WriteLine(User);
@@ -86,8 +137,28 @@ public class PreDesktop
 
 
     }
+    void UserLoad()
+    {
+        if (File.Exists("UserCredentials.txt"))
+        {
+            Console.WriteLine("Loading Credentials");
 
-    public int UserSignUp()
+            // Read from file
+            using (StreamReader UserCredentials = new StreamReader("UserCredentials.txt"))
+            {
+                User = UserCredentials.ReadLine();
+                Password = UserCredentials.ReadLine();
+            }
+
+            Console.WriteLine("Loaded Credentials");
+        }
+        else
+        {
+            Console.WriteLine("Credentials file does not exist.");
+        }
+    }
+
+public int UserSignUp()
     {
         if (Skip) { UserSave(); return 0; } 
          
@@ -99,15 +170,17 @@ public class PreDesktop
             Console.Write("Username: ");
             User = Console.ReadLine();
 
-            Console.WriteLine("Please Enter a easy to remember and secure password as you can't change later");
-            Console.Write("Password: ");
-            Password = Console.ReadLine();
-
+            Console.WriteLine("Please Enter a easy to remember and secure Password as you can't change later");
+            Password = Censoredinput("Password: ");
             yesOrNo = PromptYesOrNo(User);
+            if (yesOrNo == false)
+            {
+                Console.Clear();
+            }
 
         } while (!yesOrNo);
 
-        
+        UserSave();
 
         return 0;
     }
@@ -115,9 +188,31 @@ public class PreDesktop
     public void UserSignIn()
     {
         // TODO: Implement User Sign-in logic
-        Console.WriteLine("501: NOT IMPLEMENTED");
-        Logon();
-
+        UserLoad();
+        Console.Write("Please provide the your username and password\nUser: ");
+        string? insuser = Console.ReadLine();
+        Console.Write("\n");
+        if (string.IsNullOrEmpty(insuser))
+        {
+            Console.WriteLine("WARN: illegal username");
+            Logon();
+        }
+        string? inspassword = Censoredinput("Password: ");
+        if (string.IsNullOrEmpty(inspassword))
+        {
+            Console.WriteLine("WARN: illegal password");
+            Logon();
+        }
+        if (inspassword == Password && insuser == User) {
+            User = insuser;
+            Password = inspassword;
+            signin = true;
+            UserSave();
+        } else
+        {
+            Console.WriteLine("Your username or password is wrong. Please try again by inputting 2");
+            Logon();
+        }
     }
     public void Logon()
     {
@@ -127,14 +222,21 @@ public class PreDesktop
         {
             
             Console.WriteLine("------------ Signing Operation ------------");
-            if (systemHasUser == true) { Console.WriteLine("Sign Up - Creates a new User Profile"); Console.WriteLine("Sign in - Logs in into already existing users"); } else { Console.WriteLine("Sign Up - Creates a new Admin Profile"); Console.WriteLine("Sign in - Unavailable"); }
+            if (systemHasUser == true) { Console.WriteLine("1. Sign Up - Creates a new User Profile"); Console.WriteLine("2. Sign in - Logs in into already existing users"); } else { Console.WriteLine("1. Sign Up - Creates a new Admin Profile"); Console.WriteLine("2. Sign in - Unavailable"); }
+            Console.Write("Option: ");
             option = Console.ReadLine();
             if (string.IsNullOrEmpty(option) == false)
             {
-                option.ToLower();
-                if (option == "sign up" || option == "sign in" && systemHasUser == true)
+                option = option.ToLower();
+                if (option == "1" || option == "2" && systemHasUser == true)
                 {
-                    x = true; Console.WriteLine($"{option} command");
+                    if (option == "1")
+                    {
+                        x = true; Console.WriteLine("Sign up command");
+                    } else
+                    {
+                        x = true; Console.WriteLine("Sign in command");
+                    }
                 }
             }
             else
@@ -150,11 +252,11 @@ public class PreDesktop
             Thread.Sleep(500);
             Console.Clear();
         } while (x == false);
-        if (option == "sign up")
+        if (option == "1")
         {
             UserSignUp();
         }
-        else if (option == "sign in")
+        else if (option == "2")
         {
             UserSignIn();
         }
@@ -166,18 +268,18 @@ public class PreDesktop
             Environment.Exit(1);
         }
     }
-
     public static void Main(string[] args)
     {
+
 
         PreDesktop preDesktop = new PreDesktop();
         preDesktop.Bootup();
         preDesktop.Welcome();
         preDesktop.Logon();
-        
+
         Desktop desktop = new Desktop();
-        desktop.Sync(preDesktop.User);
-        desktop.WelcomeToDesktop();
+        desktop.Sync(preDesktop.User, preDesktop.Password);
+        desktop.WelcomeToDesktop(preDesktop.signin);
     }
 }
 
@@ -214,11 +316,10 @@ public class Desktop
 
         ExitRequest = true;
     }
-
-    public void WelcomeToDesktop()
+    public void WelcometoDesktopa()
     {
-        Console.WriteLine($"Welcome, {User}. This Operating System is one of the BEST around for your Operating needs!.");
-        Console.WriteLine("Need to check for help or need commands?");
+        Console.WriteLine($"Welcome back, {User}. We wish you best!");
+        Console.WriteLine("REMINDER: Need to check for help or need commands?");
         Console.WriteLine("Just do chelp and help!");
         CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
         lib.sync(User, Password);
@@ -229,5 +330,28 @@ public class Desktop
         } while (!ExitRequest);
 
         Environment.Exit(0);
+
+
+    }
+    public void WelcomeToDesktop(bool signin)
+    {
+        if (signin == false)
+        {
+            Console.WriteLine($"Welcome, {User}. This operating system is one of the best for meeting your computing needs!");
+            Console.WriteLine("Need to check for help or need commands?");
+            Console.WriteLine("Just do chelp and help!");
+            CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
+            lib.sync(User, Password);
+            do
+            {
+                Commandline();
+
+            } while (!ExitRequest);
+
+            Environment.Exit(0);
+        } else
+        {
+            WelcometoDesktopa();
+        }
     }
 }
