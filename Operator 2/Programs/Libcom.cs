@@ -60,7 +60,7 @@ namespace CommandLibrary
                     break;
                 case "query":
                     SystemnI systemnI = new SystemnI();
-                    Console.WriteLine("Enter Query detail:");
+                    Console.WriteLine("Enter Query detail: ");
                     string x = Console.ReadLine();
                     Console.WriteLine(systemnI.SystemInfo(x, false));
                     break;

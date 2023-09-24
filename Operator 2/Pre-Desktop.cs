@@ -191,7 +191,6 @@ public int UserSignUp()
         UserLoad();
         Console.Write("Please provide the your username and password\nUser: ");
         string? insuser = Console.ReadLine();
-        Console.Write("\n");
         if (string.IsNullOrEmpty(insuser))
         {
             Console.WriteLine("WARN: illegal username");
@@ -318,7 +317,7 @@ public class Desktop
     }
     public void WelcometoDesktopa()
     {
-        Console.WriteLine($"Welcome back, {User}. We wish you best!");
+        Console.WriteLine($"Welcome back, {User}. We wish you the best!");
         Console.WriteLine("REMINDER: Need to check for help or need commands?");
         Console.WriteLine("Just do chelp and help!");
         CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
