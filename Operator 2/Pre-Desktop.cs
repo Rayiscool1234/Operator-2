@@ -73,7 +73,7 @@ public class PreDesktop
             {
                 if (censorText.Length > 0)
                 {
-                    censorText = censorText.Remove(Password.Length - 1);
+                    censorText = censorText.Remove(censorText.Length - 1);
                     Console.Write("\b \b");  // Move cursor back, overwrite with space, move cursor back again
                     cursorLeft--;
                 }

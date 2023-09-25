@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class SystemnI
 {
 	public const bool DEBUG = false;
-	public const string VERSION = "v0.0.9 Alpha";
+	public const string VERSION = "v0.0.11 Alpha";
 
 	// Create a dictionary to store the system information
 	private Dictionary<string, string> systemInfoDict = new Dictionary<string, string>

@@ -65,6 +65,7 @@ namespace Operator_2.Programs
                         break;
                 }
             }
+            Console.WriteLine($"Equal: {result}");
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Design;
+﻿using Operator_2.Programs;
+using System.ComponentModel.Design;
 
 namespace CommandLibrary
 {
@@ -14,7 +15,7 @@ namespace CommandLibrary
         private static string runnableCommand = "Non HR perms:\ncalculator-permissions\nHR perms:\ngivepermissions-logininfo-update";
         private static string credit = "OperatorOS\nDesigned by Rayan\nCreated by Rayan\nConcept by Rayan\nThank you for using this Applications";
 
-        private static string com = "chelp-help-run-hp-credits-about-test-query";
+        private static string com = "chelp-help-run-hp-credits-about-test-query-logout\nTemp commands: calculator";
 
         private static bool Find(string input, string searchTerm)
         {
@@ -64,9 +65,14 @@ namespace CommandLibrary
                     string x = Console.ReadLine();
                     Console.WriteLine(systemnI.SystemInfo(x, false));
                     break;
-                // Continue with the rest of your commands...
+                case "calculator":
+                    CalculatorHandler();
+                    break;
+                case "logout":
+                    Logout();
+                    break;
                 default:
-                    Console.WriteLine($"Command \"{command}\" not recognized.");
+                    Console.WriteLine($"Command \"{command}\" is neither an internal command or an external program. Could not be Recongized");
                     break;
             }
         }
@@ -98,7 +104,16 @@ namespace CommandLibrary
             SystemnI systemnI = new SystemnI();
             Console.WriteLine(systemnI.SystemInfo("VERSION"));
         }
+        private static void Logout()
+        {
 
+            Console.WriteLine("Logging out");
+            PreDesktop preDesktop = new PreDesktop();
+            preDesktop.systemGotUser = true;
+            preDesktop.systemHasUser = true;
+            preDesktop.Logon();
+
+        }
         private static void Run()
         {
             Console.WriteLine($"This command is under development.\nThis is what you should expect from this command:\n1. Be able to run advanced programs\n2. Run custom code using compiled code!\n3. Be able to run code without browsing using single line arguments!\nRegarding that. This is what you should expect\n{runnableCommand}");
@@ -118,7 +133,79 @@ namespace CommandLibrary
         {
             Console.WriteLine(credit);
         }
-        
+        private void CalculatorHandler()
+        {
+            Console.WriteLine("Select Operation:\n1) Addition\n2) Subtraction\n3) Multiplication\n4) Division\n5) Conversion");
+            string choice = Console.ReadLine();
+            Operation op = Operation.Addition; // Default operation
+            double[] numbers;
+
+            switch (choice)
+            {
+                case "1":
+                    op = Operation.Addition;
+                    break;
+                case "2":
+                    op = Operation.Subtraction;
+                    break;
+                case "3":
+                    op = Operation.Multiplication;
+                    break;
+                case "4":
+                    op = Operation.Division;
+                    break;
+                case "5":
+                    op = Operation.Conversion;
+                    break;
+                default:
+                    Console.WriteLine("Invalid operation selected");
+                    return;
+            }
+
+            if (op != Operation.Conversion)
+            {
+                Console.WriteLine("Enter numbers separated by space:");
+                numbers = Array.ConvertAll(Console.ReadLine().Split(' '), Double.Parse);
+                GCalculator calc = new GCalculator(numbers, op);
+                try
+                {
+                    
+                    calc.Calculate();
+                } catch (DivideByZeroException ex)
+                {
+                    Console.WriteLine($"{ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Select Conversion:\n1) InchesToFeet\n2) FeetToYards\n3) YardsToMiles");
+                string convChoice = Console.ReadLine();
+                Conversion conv = Conversion.InchesToFeet; // Default conversion
+
+                switch (convChoice)
+                {
+                    case "1":
+                        conv = Conversion.InchesToFeet;
+                        break;
+                    case "2":
+                        conv = Conversion.FeetToYards;
+                        break;
+                    case "3":
+                        conv = Conversion.YardsToMiles;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid conversion selected");
+                        return;
+                }
+
+                Console.WriteLine("Enter number to convert:");
+                numbers = new double[] { Double.Parse(Console.ReadLine()) };
+                CCalculator ccalc = new CCalculator(numbers, op, conv);
+                ccalc.Calculate();
+            }
+        }
+
+
         private static void Clear()
         {
             Console.Clear();
