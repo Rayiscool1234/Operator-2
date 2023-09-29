@@ -13,7 +13,7 @@ namespace CommandLibrary
         private string passwordA = "NaP";
         private string userA;
         private static string runnableCommand = "Non HR perms:\ncalculator-permissions\nHR perms:\ngivepermissions-logininfo-update";
-        private static string credit = "OperatorOS\nDesigned by Rayan\nCreated by Rayan\nConcept by Rayan\nThank you for using this Applications";
+        private static string credit = "OperatorOS 2\nDesigned by Rayan\nCreated by Rayan\nConcept by Rayan\nThank you for using this Applications";
 
         private static string com = "chelp-help-run-hp-credits-about-test-query-logout\nTemp commands: calculator";
 
@@ -29,7 +29,7 @@ namespace CommandLibrary
 
         public void RunCommand(string command)
         {
-
+            command = command.ToLower();
             switch (command)
             {
                 case "testerror":
@@ -111,7 +111,16 @@ namespace CommandLibrary
             PreDesktop preDesktop = new PreDesktop();
             preDesktop.systemGotUser = true;
             preDesktop.systemHasUser = true;
+            preDesktop.User = "";
+            preDesktop.Password = " ";
+            Desktop desktop = new Desktop();
+            desktop.User = "";
+            desktop.Password = "";
             preDesktop.Logon();
+            desktop.Sync(preDesktop.User, preDesktop.Password);
+            desktop.WelcomeToDesktop(preDesktop.signin);
+            return;
+            
 
         }
         private static void Run()
@@ -135,7 +144,7 @@ namespace CommandLibrary
         }
         private void CalculatorHandler()
         {
-            Console.WriteLine("Select Operation:\n1) Addition\n2) Subtraction\n3) Multiplication\n4) Division\n5) Conversion");
+            Console.WriteLine("Select Operation:\n1) Addition\n2) Subtraction\n3) Multiplication\n4) Division\n5) Conversion\n6) Cancel");
             string choice = Console.ReadLine();
             Operation op = Operation.Addition; // Default operation
             double[] numbers;
@@ -157,6 +166,8 @@ namespace CommandLibrary
                 case "5":
                     op = Operation.Conversion;
                     break;
+                case "6":
+                    return;
                 default:
                     Console.WriteLine("Invalid operation selected");
                     return;

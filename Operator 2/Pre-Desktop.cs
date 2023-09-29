@@ -137,7 +137,7 @@ public class PreDesktop
 
 
     }
-    void UserLoad()
+    bool UserLoad()
     {
         if (File.Exists("UserCredentials.txt"))
         {
@@ -151,10 +151,14 @@ public class PreDesktop
             }
 
             Console.WriteLine("Loaded Credentials");
+            return true;
         }
         else
         {
             Console.WriteLine("Credentials file does not exist.");
+            systemGotUser = false;
+            systemHasUser = false;
+            return false;
         }
     }
 
@@ -163,15 +167,27 @@ public int UserSignUp()
         if (Skip) { UserSave(); return 0; } 
          
         bool yesOrNo;
-
+        string? lPassword;
+        string? lUser;
         do
         {
             Console.WriteLine("Please Enter your Username");
             Console.Write("Username: ");
-            User = Console.ReadLine();
-
+            lUser = Console.ReadLine();
+            if (string.IsNullOrEmpty(lUser))
+            {
+                Console.WriteLine("WARN: illegal username");
+                Logon();
+                return 0;
+            }
             Console.WriteLine("Please Enter a easy to remember and secure Password as you can't change later");
-            Password = Censoredinput("Password: ");
+            lPassword = Censoredinput("Password: ");
+            if (string.IsNullOrEmpty(lPassword))
+            {
+                Console.WriteLine("WARN: illegal password");
+                Logon();
+                return 0;
+            }
             yesOrNo = PromptYesOrNo(User);
             if (yesOrNo == false)
             {
@@ -179,7 +195,8 @@ public int UserSignUp()
             }
 
         } while (!yesOrNo);
-
+        Password = lPassword;
+        User = lUser;
         UserSave();
 
         return 0;
@@ -187,8 +204,11 @@ public int UserSignUp()
 
     public void UserSignIn()
     {
-        // TODO: Implement User Sign-in logic
-        UserLoad();
+        if (UserLoad() == false)
+        {
+            Logon();
+            return;
+        }
         Console.Write("Please provide the your username and password\nUser: ");
         string? insuser = Console.ReadLine();
         if (string.IsNullOrEmpty(insuser))
@@ -332,7 +352,7 @@ public class Desktop
 
 
     }
-    public void WelcomeToDesktop(bool signin)
+    public void WelcomeToDesktop(bool signin = false)
     {
         if (signin == false)
         {
