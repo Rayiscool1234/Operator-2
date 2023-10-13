@@ -52,7 +52,7 @@ public class PreDesktop
 
         return false;
     }
-    public string Censoredinput(string text)
+    public static string Censoredinput(string text)
     {
         string censorText = "";
         Console.Write(text);
@@ -125,8 +125,7 @@ public class PreDesktop
     {
         Console.WriteLine("Saving Credentials\nSaved Credentials");
 
-        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
-        lib.sync(User, Password);
+        CommandLibrary.CommandLibrary.sync(User, Password);
 
 
         using (StreamWriter UserCredentials = new StreamWriter("UserCredentials.txt"))
@@ -314,12 +313,12 @@ public class Desktop
 
     private void Commandline()
     {
-        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
         string command;
         do
         {
             Console.Write($"{User}>> ");
             command = Console.ReadLine();
+            
 
             if (command == "exit")
             {
@@ -327,7 +326,9 @@ public class Desktop
             }
             if (string.IsNullOrEmpty(command) == false && command != "exit")
             {
-                lib.RunCommand(command);
+                string[] args = CommandLibrary.CommandLibrary.HandleCommandLineArgs(command);
+                command = args[0];
+                CommandLibrary.CommandLibrary.RunCommand(command, args);
             }
             command = "";
 
@@ -340,8 +341,8 @@ public class Desktop
         Console.WriteLine($"Welcome back, {User}. We wish you the best!");
         Console.WriteLine("REMINDER: Need to check for help or need commands?");
         Console.WriteLine("Just do chelp and help!");
-        CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
-        lib.sync(User, Password);
+        
+        CommandLibrary.CommandLibrary.sync(User, Password);
         do
         {
             Commandline();
@@ -359,8 +360,8 @@ public class Desktop
             Console.WriteLine($"Welcome, {User}. This operating system is one of the best for meeting your computing needs!");
             Console.WriteLine("Need to check for help or need commands?");
             Console.WriteLine("Just do chelp and help!");
-            CommandLibrary.CommandLibrary lib = new CommandLibrary.CommandLibrary();
-            lib.sync(User, Password);
+
+            CommandLibrary.CommandLibrary.sync(User, Password);
             do
             {
                 Commandline();

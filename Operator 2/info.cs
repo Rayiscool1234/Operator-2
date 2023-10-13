@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class SystemnI
 {
 	public const bool DEBUG = false;
-	public const string VERSION = "v0.0.11 Alpha";
+	public const string VERSION = "v0.0.13 Alpha";
 
 	// Create a dictionary to store the system information
 	private Dictionary<string, string> systemInfoDict = new Dictionary<string, string>
@@ -31,7 +31,7 @@ public class SystemnI
 			requestedQuery = requestedQuery.ToUpper();
 		}
 
-		if (requestedQuery.Contains(" ") || requestedQuery.Contains("   ") || requestedQuery.Contains("\\"))
+		if (requestedQuery.Contains(" ") || requestedQuery.Contains("\t") || requestedQuery.Contains("\\"))
 		{
 			return "PROHIBITED UNICODE CHARACTER: DON'T USE SPACE TAB OR BACKSLASH\nUSE INSTEAD UNDERSCORE \"_\"";
 		}
