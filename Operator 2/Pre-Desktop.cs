@@ -208,7 +208,7 @@ public int UserSignUp()
             Logon();
             return;
         }
-        Console.Write("Please provide the your username and password\nUser: ");
+        Console.Write("Please provide the your username and passx3word\nUser: ");
         string? insuser = Console.ReadLine();
         if (string.IsNullOrEmpty(insuser))
         {
