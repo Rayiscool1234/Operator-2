@@ -13,8 +13,9 @@ public class SystemnI
 		{ "VERSION", VERSION }
 	};
 
-	public string SystemInfo(string? requestedQuery = null, bool illegalexit = true)
-	{
+	
+	public string SystemInfo(string? requestedQuery = null, bool illegalexit = true)// Main Function
+    {
 		if (requestedQuery == null && illegalexit)
 		{
 			Console.WriteLine("ERROR: INVALID QUERY SYSTEM FAILURE IMMEDIATE");
