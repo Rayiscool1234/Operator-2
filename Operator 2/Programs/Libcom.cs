@@ -94,7 +94,7 @@ namespace CommandLibrary
                     commandran = true;
                     break;
                 case "calculator":
-                    CalculatorHandler();
+                    CalculatorMenu();
                     commandran = true;
                     break;
                 case "logout":
@@ -182,7 +182,7 @@ namespace CommandLibrary
             }
             else
             {
-                Console.WriteLine(args.ToString());
+                Console.WriteLine(string.Join(" ", args));
             }
         }
         public static string[] HandleCommandLineArgs(string input)
@@ -208,6 +208,116 @@ namespace CommandLibrary
         {
             Console.WriteLine(credit);
         }
+
+        private static void CalculatorMenu()
+        {
+            bool keepGoing = true;
+
+            while (keepGoing)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║    OperatorOS Calcs    ║");
+                Console.WriteLine("╠════════════════════════╣");
+                Console.WriteLine("║ 1) Addition            ║");
+                Console.WriteLine("║ 2) Subtraction         ║");
+                Console.WriteLine("║ 3) Multiplication      ║");
+                Console.WriteLine("║ 4) Division            ║");
+                Console.WriteLine("║ 5) Conversion          ║");
+                Console.WriteLine("║ 6) Back to Commands    ║");
+                Console.WriteLine("╚════════════════════════╝");
+                Console.Write("Select an option [1–6]: ");
+
+                var choice = Console.ReadLine()?.Trim();
+                switch (choice)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                        RunBasicCalc(choice);
+                        break;
+                    case "5":
+                        RunConversion();
+                        break;
+                    case "6":
+                        keepGoing = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice, press any key to try again...");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        private static void RunBasicCalc(string opChoice)
+        {
+            var op = opChoice switch
+            {
+                "1" => Operation.Addition,
+                "2" => Operation.Subtraction,
+                "3" => Operation.Multiplication,
+                "4" => Operation.Division,
+                _ => throw new InvalidOperationException()
+            };
+
+            Console.Write("Enter numbers separated by spaces: ");
+            var input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            var nums = input
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(double.Parse)
+                .ToArray();
+
+            var calc = new GCalculator(nums, op);
+            try
+            {
+                calc.Calculate();
+            }
+            catch (DivideByZeroException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            Pause();
+        }
+
+        private static void RunConversion()
+        {
+            Console.WriteLine("Conversions:");
+            Console.WriteLine("1) Inches → Feet");
+            Console.WriteLine("2) Feet → Yards");
+            Console.WriteLine("3) Yards → Miles");
+            Console.Write("Select [1–3]: ");
+            var c = Console.ReadLine();
+
+            var conv = c switch
+            {
+                "1" => Conversion.InchesToFeet,
+                "2" => Conversion.FeetToYards,
+                "3" => Conversion.YardsToMiles,
+                _ => throw new InvalidOperationException()
+            };
+
+            Console.Write("Enter value: ");
+            if (!double.TryParse(Console.ReadLine(), out var v)) return;
+
+            var ccalc = new CCalculator(new[] { v }, Operation.Conversion, conv);
+            ccalc.Calculate();
+
+            Pause();
+        }
+
+        private static void Pause()
+        {
+            Console.WriteLine();
+            Console.Write("Press any key to return to calculator menu…");
+            Console.ReadKey(intercept: true);
+        }
+
+        /*
         private static void CalculatorHandler()
         {
             Console.WriteLine("Select Operation:\n1) Addition\n2) Subtraction\n3) Multiplication\n4) Division\n5) Conversion\n6) Cancel");
@@ -281,7 +391,7 @@ namespace CommandLibrary
                 ccalc.Calculate();
             }
         }
-
+        */
 
         private static void Clear()
         {
